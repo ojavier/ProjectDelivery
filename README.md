@@ -6,7 +6,7 @@
 
 ### Project delivery - 1
 
-### Sistema de reservas de transporte público
+## Sistema de reservas de transporte público
 
 Este proyecto busca desarrollar un sistema de reservas en línea para el transporte público, 
 como autobuses o trenes. Esto permitiría a los usuarios reservar y pagar sus boletos de antemano, 
