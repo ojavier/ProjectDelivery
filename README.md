@@ -12,3 +12,4 @@ Este proyecto busca desarrollar un sistema de reservas en línea para el transpo
 como autobuses. Esto permitiría a los usuarios reservar y pagar sus boletos de antemano, 
 evitando largas filas y facilitando la planificación de viajes. La idea me surgió al ver el basto tráfico generado en Querétaro
 para buscar mejorar la movilidad y el transporte público busqué distinras opciones y ésta me pareció una.
+
