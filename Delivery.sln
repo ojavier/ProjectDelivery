@@ -1,31 +1,334 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Delivery", "Delivery\Delivery.vcxproj", "{1824237A-BF97-4418-BE79-FCE6374CC33B}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1824237A-BF97-4418-BE79-FCE6374CC33B}.Debug|x64.ActiveCfg = Debug|x64
-		{1824237A-BF97-4418-BE79-FCE6374CC33B}.Debug|x64.Build.0 = Debug|x64
-		{1824237A-BF97-4418-BE79-FCE6374CC33B}.Debug|x86.ActiveCfg = Debug|Win32
-		{1824237A-BF97-4418-BE79-FCE6374CC33B}.Debug|x86.Build.0 = Debug|Win32
-		{1824237A-BF97-4418-BE79-FCE6374CC33B}.Release|x64.ActiveCfg = Release|x64
-		{1824237A-BF97-4418-BE79-FCE6374CC33B}.Release|x64.Build.0 = Release|x64
-		{1824237A-BF97-4418-BE79-FCE6374CC33B}.Release|x86.ActiveCfg = Release|Win32
-		{1824237A-BF97-4418-BE79-FCE6374CC33B}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2DBFA9A4-5617-42BD-9FDD-F9308039FDD5}
-	EndGlobalSection
-EndGlobal
+#include <iostream>
+using namespace std;
+
+class Usuario {
+private:
+    int idUsuario;
+    string nombre;
+    string correoElectronico;
+    string contraseña;
+
+public:
+    // Constructor
+    Usuario(int id, const string nombreUsuario, const string correo, const string contraseñaUsuario)
+        : idUsuario(id), nombre(nombreUsuario), correoElectronico(correo), contraseña(contraseñaUsuario) {}
+    int getIdUsuario() const {
+        return idUsuario;
+    }
+    string getNombre() const {
+        return nombre;
+    }
+
+    string getCorreoElectronico() const {
+        return correoElectronico;
+    }
+
+    // Métodos
+    void iniciarSesion() {
+        std::cout << "Iniciando sesión como " << nombre << std::endl;
+        // Lógica de inicio de sesión
+    }
+
+    void realizarReserva() {
+        std::cout << "Realizando reserva como " << nombre << std::endl;
+        // Lógica de reserva
+    }
+
+    void cancelarReserva() {
+        std::cout << "Cancelando reserva de " << nombre << std::endl;
+        // Lógica de cancelación de reserva
+    }
+
+    // Setters
+    void setIdUsuario(int id) {
+        idUsuario = id;
+    }
+
+    void setNombre(const std::string& nuevoNombre) {
+        nombre = nuevoNombre;
+    }
+
+    void setCorreoElectronico(const std::string& nuevoCorreo) {
+        correoElectronico = nuevoCorreo;
+    }
+
+    void setContraseña(const std::string& nuevaContraseña) {
+        contraseña = nuevaContraseña;
+    }
+};
+
+class Boleto {
+private:
+    int idBoleto;
+    string origen;
+    string destino;
+    string fecha;
+    string hora;
+    int asiento;
+    float costo;
+    string estado;
+
+public:
+    // Constructor
+    Boleto(int id, const string& origenBoleto, const string& destinoBoleto, const string& fechaBoleto,
+        const string& horaBoleto, const string& asientoBoleto, float costoBoleto)
+        : idBoleto(id), origen(origenBoleto), destino(destinoBoleto), fecha(fechaBoleto), hora(horaBoleto),
+        asiento(asientoBoleto), costo(costoBoleto), estado("Reservado") {}
+
+    // Getters
+    int getIdBoleto() const {
+        return idBoleto;
+    }
+
+    string getOrigen() const {
+        return origen;
+    }
+
+    string getDestino() const {
+        return destino;
+    }
+
+    string getFecha() const {
+        return fecha;
+    }
+
+    string getHora() const {
+        return hora;
+    }
+
+    int getAsiento() const {
+        return asiento;
+    }
+
+    float getCosto() const {
+        return costo;
+    }
+
+    string getEstado() const {
+        return estado;
+    }
+
+    // Otros métodos
+    void realizarPago() {
+        std::cout << "Realizando pago del boleto ID: " << idBoleto << std::endl;
+        // Lógica de pago
+        estado = "Pagado";
+    }
+
+    void cancelarReserva() {
+        std::cout << "Cancelando reserva del boleto ID: " << idBoleto << std::endl;
+        // Lógica de cancelación de reserva
+        estado = "Cancelado";
+    }
+
+    // Setters
+    void setIdBoleto(int id) {
+        idBoleto = id;
+    }
+
+    void setOrigen(const string& nuevoOrigen) {
+        origen = nuevoOrigen;
+    }
+
+    void setDestino(const string& nuevoDestino) {
+        destino = nuevoDestino;
+    }
+
+    void setFecha(const string& nuevaFecha) {
+        fecha = nuevaFecha;
+    }
+
+    void setHora(const string& nuevaHora) {
+        hora = nuevaHora;
+    }
+
+    void setAsiento(const int nuevoAsiento) {
+        asiento = nuevoAsiento;
+    }
+
+    void setCosto(float nuevoCosto) {
+        costo = nuevoCosto;
+    }
+
+    void setEstado(const std::string& nuevoEstado) {
+        estado = nuevoEstado;
+    }
+};
+
+class Autobus {
+private:
+    int idAutobus;
+    string modelo;
+    int capacidadMaxima;
+    string conductor;
+
+public:
+    // Constructor
+    Autobus(int id, const string& modeloAutobus, int capacidad, const string& conductorAutobus)
+        : idAutobus(id), modelo(modeloAutobus), capacidadMaxima(capacidad), conductor(conductorAutobus) {}
+
+    // Getters
+    int getIdAutobus() const {
+        return idAutobus;
+    }
+
+    string getModelo() const {
+        return modelo;
+    }
+
+    int getCapacidadMaxima() const {
+        return capacidadMaxima;
+    }
+
+    string getConductor() const {
+        return conductor;
+    }
+
+    // Otros métodos
+    bool verificarDisponibilidad() {
+        // Lógica para verificar la disponibilidad del autobús
+    }
+
+    void reservarAsiento() {
+        // Lógica para reservar un asiento en el autobús
+    }
+
+    // Setters
+    void setIdAutobus(int id) {
+        idAutobus = id;
+    }
+
+    void setModelo(const string& nuevoModelo) {
+        modelo = nuevoModelo;
+    }
+
+    void setCapacidadMaxima(int capacidad) {
+        capacidadMaxima = capacidad;
+    }
+
+    void setConductor(const string& nuevoConductor) {
+        conductor = nuevoConductor;
+    }
+};
+
+class Ruta {
+private:
+    int idRuta;
+    string origen;
+    string destino;
+
+public:
+    // Constructor
+    Ruta(int id, const string& origenRuta, const string& destinoRuta)
+        : idRuta(id), origen(origenRuta), destino(destinoRuta) {}
+
+    // Getters
+    int getIdRuta() const {
+        return idRuta;
+    }
+
+    string getOrigen() const {
+        return origen;
+    }
+
+    string getDestino() const {
+        return destino;
+    }
+
+    // Otros métodos
+    void agregarRuta() {
+        std::cout << "Ruta agregada con ID: " << idRuta << std::endl;
+        // Lógica para agregar la ruta
+    }
+
+    void eliminarRuta() {
+        std::cout << "Ruta eliminada con ID: " << idRuta << std::endl;
+        // Lógica para eliminar la ruta
+    }
+
+    // Setters
+    void setIdRuta(int id) {
+        idRuta = id;
+    }
+
+    void setOrigen(const string& nuevoOrigen) {
+        origen = nuevoOrigen;
+    }
+
+    void setDestino(const string& nuevoDestino) {
+        destino = nuevoDestino;
+    }
+};
+
+class Fecha {
+    // Clase Fecha
+    // Implementación de la clase Fecha
+};
+
+class Pagos {
+private:
+    int idPago;
+    int idUsuario;
+    int idBoleto;
+    Fecha fechaPago;
+    float monto;
+
+public:
+    // Constructor
+    Pagos(int id, int idUsuarioPago, int idBoletoPago, const Fecha& fecha, float montoPago)
+        : idPago(id), idUsuario(idUsuarioPago), idBoleto(idBoletoPago), fechaPago(fecha), monto(montoPago) {}
+
+    // Getters
+    int getIdPago() const {
+        return idPago;
+    }
+
+    int getIdUsuario() const {
+        return idUsuario;
+    }
+
+    int getIdBoleto() const {
+        return idBoleto;
+    }
+
+    Fecha getFechaPago() const {
+        return fechaPago;
+    }
+
+    float getMonto() const {
+        return monto;
+    }
+
+    // Otros métodos
+    void realizarPago() {
+        std::cout << "Realizando pago con ID: " << idPago << std::endl;
+        // Lógica para realizar el pago
+    }
+
+    // Setters
+    void setIdPago(int id) {
+        idPago = id;
+    }
+
+    void setIdUsuario(int idUsuarioPago) {
+        idUsuario = idUsuarioPago;
+    }
+
+    void setIdBoleto(int idBoletoPago) {
+        idBoleto = idBoletoPago;
+    }
+
+    void setFechaPago(const Fecha& nuevaFecha) {
+        fechaPago = nuevaFecha;
+    }
+
+    void setMonto(float nuevoMonto) {
+        monto = nuevoMonto;
+    }
+};
+
+
+int main()
+{
+    std::cout << "Hello World!\n";
+}
