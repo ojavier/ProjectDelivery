@@ -2,89 +2,151 @@
 #include <vector>
 using namespace std;
 
-class Usuario {
-private:
-    int idUsuario;
-    string nombre;
-    string correoElectronico;
-    string contraseña;
-    vector<Boleto*> boletos;
-    vector<Pago*> pagos;
+class Persona {
+protected:
+    std::string nombre;
+    int edad;
+    int id;
 
 public:
-    // Constructor
-    Usuario(int id, const string& nombreUsuario, const string& correo, const string& contraseñaUsuario)
-        : idUsuario(id), nombre(nombreUsuario), correoElectronico(correo), contraseña(contraseñaUsuario) {}
+    Persona(const std::string& nombre, int edad, int id)
+        : nombre(nombre), edad(edad), id(id) {}
 
-    // Getters
-    int getIdUsuario() const {
-        return idUsuario;
+    virtual void mostrarInformacion() {
+        std::cout << "Nombre: " << nombre << std::endl;
+        std::cout << "Edad: " << edad << std::endl;
+        std::cout << "ID: " << id << std::endl;
     }
 
-    string getNombre() const {
+    std::string getNombre() const {
         return nombre;
     }
 
-    string getCorreoElectronico() const {
-        return correoElectronico;
+    void setNombre(const std::string& nuevoNombre) {
+        nombre = nuevoNombre;
     }
+
+    int getEdad() const {
+        return edad;
+    }
+
+    void setEdad(int nuevaEdad) {
+        edad = nuevaEdad;
+    }
+
+    int getID() const {
+        return id;
+    }
+
+    void setID(int nuevoID) {
+        id = nuevoID;
+    }
+};
+
+
+class Usuario : public Persona {
+private:
+    std::string correoElectronico;
+    std::string contraseña;
+    std::vector<Boleto*> boletos;
+    std::vector<Pago*> pagos;
+
+public:
+    // Constructor
+    Usuario(int id, const std::string& nombreUsuario, const std::string& correo, const std::string& contraseñaUsuario)
+        : Persona(nombreUsuario, 0, id), correoElectronico(correo), contraseña(contraseñaUsuario) {}
 
     // Métodos
     void iniciarSesion() {
-        cout << "Iniciando sesión como " << nombre << endl;
+        std::cout << "Iniciando sesión como " << nombre << std::endl;
         // Lógica de inicio de sesión
     }
 
     void realizarReserva(Boleto* boleto) {
-        cout << "Realizando reserva del boleto ID: " << boleto->getIdBoleto() << " para el usuario " << nombre << endl;
+        std::cout << "Realizando reserva del boleto ID: " << boleto->getIdBoleto() << " para el usuario " << nombre << std::endl;
         // Lógica para realizar la reserva
     }
 
     void cancelarReserva(Boleto* boleto) {
-        cout << "Cancelando reserva del boleto ID: " << boleto->getIdBoleto() << " para el usuario " << nombre << endl;
+        std::cout << "Cancelando reserva del boleto ID: " << boleto->getIdBoleto() << " para el usuario " << nombre << std::endl;
         // Lógica para cancelar la reserva
     }
 
     void agregarBoleto(Boleto* boleto) {
-        cout << "Agregando boleto ID: " << boleto->getIdBoleto() << " al usuario " << nombre << endl;
+        std::cout << "Agregando boleto ID: " << boleto->getIdBoleto() << " al usuario " << nombre << std::endl;
         boletos.push_back(boleto);
     }
 
     void agregarPago(Pago* pago) {
-        cout << "Agregando pago al usuario " << nombre << endl;
+        std::cout << "Agregando pago al usuario " << nombre << std::endl;
         pagos.push_back(pago);
     }
 
-    // Setters
-    void setIdUsuario(int id) {
-        idUsuario = id;
+    // Override del método mostrarInformacion() de la clase base
+    void mostrarInformacion() override {
+        Persona::mostrarInformacion();
+        std::cout << "Correo electrónico: " << correoElectronico << std::endl;
+        std::cout << "Contraseña: " << contraseña << std::endl;
     }
 
-    void setNombre(const string& nuevoNombre) {
-        nombre = nuevoNombre;
+    // Getters y setters adicionales
+    std::string getCorreoElectronico() const {
+        return correoElectronico;
     }
 
-    void setCorreoElectronico(const string& nuevoCorreo) {
+    void setCorreoElectronico(const std::string& nuevoCorreo) {
         correoElectronico = nuevoCorreo;
     }
 
-    void setContraseña(const string& nuevaContraseña) {
+    std::string getContraseña() const {
+        return contraseña;
+    }
+
+    void setContraseña(const std::string& nuevaContraseña) {
         contraseña = nuevaContraseña;
     }
 };
+
+class Conductor : public Persona {
+private:
+    int idConductor;
+
+public:
+    Conductor(const std::string& nombre, int edad, int id, int idConductor)
+        : Persona(nombre, edad, id), idConductor(idConductor) {}
+
+    void mostrarInformacion() override {
+        std::cout << "--- Información del Conductor ---" << std::endl;
+        Persona::mostrarInformacion();
+        std::cout << "ID Conductor: " << idConductor << std::endl;
+    }
+
+    int getIDConductor() const {
+        return idConductor;
+    }
+
+    void setIDConductor(int nuevoIDConductor) {
+        idConductor = nuevoIDConductor;
+    }
+};
+
 
 class Boleto {
 private:
     int idBoleto;
     string origen;
     string destino;
+    Fecha fecha;
+    Hora hora;
     Usuario* usuario;
     vector<Pago*> pagos;
+    float costo;      // Atributo para el costo del boleto
+    int asiento;      // Atributo para el número de asiento asignado
 
 public:
     // Constructor
-    Boleto(int id, const string& origenBoleto, const string& destinoBoleto)
-        : idBoleto(id), origen(origenBoleto), destino(destinoBoleto), usuario(nullptr) {}
+    Boleto(int id, const string& origenBoleto, const string& destinoBoleto, const Fecha& fechaViaje, const Hora& horaViaje, float costoBoleto)
+        : idBoleto(id), origen(origenBoleto), destino(destinoBoleto), fecha(fechaViaje), hora(horaViaje), usuario(nullptr), costo(costoBoleto), asiento(0) {}
 
     // Getters
     int getIdBoleto() const {
@@ -99,8 +161,24 @@ public:
         return destino;
     }
 
+    Fecha getFecha() const {
+        return fecha;
+    }
+
+    Hora getHora() const {
+        return hora;
+    }
+
     Usuario* getUsuario() const {
         return usuario;
+    }
+
+    float getCosto() const {
+        return costo;
+    }
+
+    int getAsiento() const {
+        return asiento;
     }
 
     // Setter
@@ -136,22 +214,37 @@ public:
     void setDestino(const string& nuevoDestino) {
         destino = nuevoDestino;
     }
+
+    void setFecha(const Fecha& nuevaFecha) {
+        fecha = nuevaFecha;
+    }
+
+    void setHora(const Hora& nuevaHora) {
+        hora = nuevaHora;
+    }
+
+    void setCosto(float nuevoCosto) {
+        costo = nuevoCosto;
+    }
+
+    void setAsiento(int nuevoAsiento) {
+        asiento = nuevoAsiento;
+    }
 };
 
 
-class Autobus {
+class Autobus : public Conductor {
 private:
     int idAutobus;
     string modelo;
     int capacidadMaxima;
-    string conductor;
     Ruta* ruta;  // Relación de agregación con la clase Ruta
     vector<Boleto*> boletos;  // Relación de agregación con la clase Boleto
 
 public:
     // Constructor
-    Autobus(int id, const string& modeloAutobus, int capacidad, const string& conductorAutobus)
-        : idAutobus(id), modelo(modeloAutobus), capacidadMaxima(capacidad), conductor(conductorAutobus), ruta(nullptr) {}
+    Autobus(int id, const string& modeloAutobus, int capacidad, const string& conductorAutobus, int idConductor)
+        : Conductor(conductorAutobus, 0, id, idConductor), idAutobus(id), modelo(modeloAutobus), capacidadMaxima(capacidad), ruta(nullptr) {}
 
     // Getters
     int getIdAutobus() const {
@@ -164,10 +257,6 @@ public:
 
     int getCapacidadMaxima() const {
         return capacidadMaxima;
-    }
-
-    string getConductor() const {
-        return conductor;
     }
 
     Ruta* getRuta() const {
@@ -205,14 +294,11 @@ public:
         capacidadMaxima = capacidad;
     }
 
-    void setConductor(const string& nuevoConductor) {
-        conductor = nuevoConductor;
-    }
-
     void setRuta(Ruta* nuevaRuta) {
         ruta = nuevaRuta;
     }
 };
+
 
 
 class Ruta {
@@ -274,6 +360,9 @@ public:
 };
 
 
+
+//Las Clases Fecha y Hora no poseen relevancia para el propósito del programa,
+//mas bien son clases auxiliares para poder tener un formato
 class Fecha {
 private:
     int dia;
@@ -291,6 +380,26 @@ public:
     }
 };
 
+class Hora {
+private:
+    int horas;
+    int minutos;
+
+public:
+    // Constructor
+    Hora(int h, int m) : horas(h), minutos(m) {}
+
+    // Sobrecarga del operador de inserción <<
+    friend std::ostream& operator<<(std::ostream& os, const Hora& hora) {
+        os << hora.horas << ":" << hora.minutos;
+        return os;
+    }
+};
+
+
+class Fecha {
+    // Implementación de la clase Fecha
+};
 
 class Pago {
 private:
@@ -349,12 +458,12 @@ public:
 
     // Otros métodos
     void realizarPago() {
-        std::cout << "Realizando pago con ID: " << idPago << std::endl;
+        cout << "Realizando pago con ID: " << idPago << endl;
         // Lógica para realizar el pago
     }
 
     void cancelarPago() {
-        std::cout << "Cancelando pago con ID: " << idPago << std::endl;
+        cout << "Cancelando pago con ID: " << idPago << endl;
         // Lógica para cancelar el pago
     }
 };
