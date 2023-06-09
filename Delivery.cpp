@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <sstream>
 using namespace std;
 
 
@@ -15,6 +16,11 @@ private:
 public:
     // Constructor
     Fecha(int d, int m, int a) : dia(d), mes(m), año(a) {}
+
+    // Métodos de acceso
+    int getDia() const { return dia; }
+    int getMes() const { return mes; }
+    int getAño() const { return año; }
 
     // Sobrecarga del operador de inserción <<
     friend std::ostream& operator<<(std::ostream& os, const Fecha& fecha) {
@@ -32,6 +38,10 @@ public:
     // Constructor
     Hora(int h, int m) : horas(h), minutos(m) {}
 
+    // Métodos de acceso
+    int getHoras() const { return horas; }
+    int getMinutos() const { return minutos; }
+
     // Sobrecarga del operador de inserción <<
     friend std::ostream& operator<<(std::ostream& os, const Hora& hora) {
         os << hora.horas << ":" << hora.minutos;
@@ -39,7 +49,7 @@ public:
     }
 };
 
-
+// Clase Pago para simular el pago de un boleto
 class Pago {
 private:
     int idPago;
@@ -109,6 +119,7 @@ public:
 
 class Usuario; // Declaración anticipada de la clase Usuario
 
+// Clase Boleto para representar un boleto que posea el usuario
 class Boleto {
 private:
     int idBoleto;
@@ -210,6 +221,7 @@ public:
     }
 };
 
+// Clase virtual Persona para representar una persona y que ciertos atributos puedan ser aplicados en otras clases
 class Persona {
 protected:
     string nombre;
@@ -251,7 +263,7 @@ public:
     }
 };
 
-
+// Clase Usuario para representar a un usuario del sistema
 class Usuario : public Persona {
 private:
     string idUsuario;
@@ -312,6 +324,7 @@ public:
     }
 };
 
+// Clase Conductor para representar a un conductor del sistema
 class Conductor : public Persona {
 private:
     int idConductor;
@@ -338,6 +351,7 @@ public:
 // Declaración anticipada de la clase Autobus
 class Autobus;
 
+// Clase Ruta para simular las distintas rutas posibles
 class Ruta {
 private:
     int idRuta;
@@ -396,7 +410,7 @@ public:
     }
 };
 
-
+// Clase Autobus para representar a un autobus
 class Autobus : public Conductor {
 private:
     int idAutobus;
@@ -463,48 +477,129 @@ public:
     }
 };
 
-
-void verHistorialBoletos() {
+//Funcion para ver el historial de los boletos comprados
+void verHistorialBoletos(const string& nombreArchivo) {
     vector<Boleto*> boletos;
 
-    ifstream archivo("boletos.txt");
-    if (archivo.is_open()) {
+    ifstream archivo(nombreArchivo);
+    if (!archivo.is_open()) {
+        cout << "No se pudo abrir el archivo de boletos." << endl;
+        return;
+    }
+
+    int idBoleto, costo, asiento;
+    string origen, destino;
+    int dia, mes, año;
+    int horas, minutos;
+    bool archivoLeido = false;
+
+    while (archivo >> idBoleto >> origen >> destino >> dia >> mes >> año >> horas >> minutos >> costo >> asiento) {
+        archivoLeido = true;
+        Fecha fecha(dia, mes, año);
+        Hora hora(horas, minutos);
+        Boleto* boleto = new Boleto(idBoleto, origen, destino, fecha, hora, costo);
+        boleto->setAsiento(asiento);
+        boletos.push_back(boleto);
+    }
+
+    archivo.close();
+
+    if (!archivoLeido) {
+        cout << "El archivo de boletos está vacío." << endl;
+        return;
+    }
+
+    cout << "Historial de boletos:" << endl;
+    for (const Boleto* boleto : boletos) {
+        cout << "ID del boleto: " << boleto->getIdBoleto() << endl;
+        cout << "Origen: " << boleto->getOrigen() << endl;
+        cout << "Destino: " << boleto->getDestino() << endl;
+        cout << "Fecha: " << boleto->getFecha() << endl;
+        cout << "Hora: " << boleto->getHora() << endl;
+        cout << "Costo: $" << boleto->getCosto() << endl;
+        cout << "Asiento: " << boleto->getAsiento() << endl;
+        cout << "------------------------" << endl;
+    }
+
+    int opcion;
+    cout << "1. Agregar nuevo boleto" << endl;
+    cout << "2. Volver al menú principal" << endl;
+    cout << "Ingrese una opción: ";
+    cin >> opcion;
+
+    if (opcion == 1) {
         int idBoleto, costo, asiento;
         string origen, destino;
         int dia, mes, año;
         int horas, minutos;
 
-        while (archivo >> idBoleto >> origen >> destino >> dia >> mes >> año >> horas >> minutos >> costo >> asiento) {
-            Fecha fecha(dia, mes, año);
-            Hora hora(horas, minutos);
+        cout << "Ingrese el ID del boleto: ";
+        cin >> idBoleto;
+        cin.ignore();
 
-            Boleto* boleto = new Boleto(idBoleto, origen, destino, fecha, hora, costo);
-            boleto->setAsiento(asiento);
+        cout << "Ingrese el origen: ";
+        getline(cin, origen);
 
-            boletos.push_back(boleto);
-        }
+        cout << "Ingrese el destino: ";
+        getline(cin, destino);
 
-        archivo.close();
+        cout << "Ingrese la fecha (día mes año): ";
+        cin >> dia >> mes >> año;
+
+        cout << "Ingrese la hora (horas minutos): ";
+        cin >> horas >> minutos;
+
+        cout << "Ingrese el costo: ";
+        cin >> costo;
+
+        cout << "Ingrese el número de asiento: ";
+        cin >> asiento;
+
+        Fecha fecha(dia, mes, año);
+        Hora hora(horas, minutos);
+        Boleto* boleto = new Boleto(idBoleto, origen, destino, fecha, hora, costo);
+        boleto->setAsiento(asiento);
+        boletos.push_back(boleto);
+
+        cout << "Boleto agregado exitosamente." << endl;
     }
-
-    if (boletos.empty()) {
-        cout << "No hay boletos registrados." << endl;
+    else if (opcion == 2) {
+        return;
     }
     else {
-        cout << "Historial de Boletos:" << endl;
-        for (const auto& boleto : boletos) {
-            cout << "ID del Boleto: " << boleto->getIdBoleto() << endl;
-            cout << "Origen: " << boleto->getOrigen() << endl;
-            cout << "Destino: " << boleto->getDestino() << endl;
-            cout << "Fecha: " << boleto->getFecha() << endl;
-            cout << "Hora: " << boleto->getHora() << endl;
-            cout << "Costo: " << boleto->getCosto() << endl;
-            cout << "Asiento: " << boleto->getAsiento() << endl;
-            cout << "------------------------" << endl;
-        }
+        cout << "Opción inválida. Volviendo al menú principal." << endl;
+        return;
+    }
+
+    // Sobreescribir el archivo
+    ofstream archivoSalida(nombreArchivo, ios::out | ios::trunc);
+    if (!archivoSalida.is_open()) {
+        cout << "No se pudo abrir el archivo para escritura." << endl;
+        return;
+    }
+
+    for (const Boleto* boleto : boletos) {
+        archivoSalida << boleto->getIdBoleto() << " ";
+        archivoSalida << boleto->getOrigen() << " ";
+        archivoSalida << boleto->getDestino() << " ";
+        archivoSalida << boleto->getFecha().getDia() << " ";
+        archivoSalida << boleto->getFecha().getMes() << " ";
+        archivoSalida << boleto->getFecha().getAño() << " ";
+        archivoSalida << boleto->getHora().getHoras() << " ";
+        archivoSalida << boleto->getHora().getMinutos() << " ";
+        archivoSalida << boleto->getCosto() << " ";
+        archivoSalida << boleto->getAsiento() << endl;
+    }
+
+    archivoSalida.close();
+
+    cout << "El archivo de boletos ha sido actualizado." << endl;
+
+    // Liberar la memoria de los boletos
+    for (Boleto* boleto : boletos) {
+        delete boleto;
     }
 }
-
 
 // Función para liberar memoria de los objetos creados
 template<typename T>
@@ -514,113 +609,101 @@ void liberarMemoria(const vector<T*>& objetos) {
     }
 }
 
+// Función para mostrar la información de las rutas
+void mostrarInformacionRutas(const Ruta& ruta1, const Ruta& ruta2, const Ruta& ruta3) {
+    cout << "Información de las Rutas:" << endl;
+    cout << "Ruta 1 - ID: " << ruta1.getIdRuta() << ", Origen: " << ruta1.getOrigen() << ", Destino: " << ruta1.getDestino() << endl;
+    cout << "Ruta 2 - ID: " << ruta2.getIdRuta() << ", Origen: " << ruta2.getOrigen() << ", Destino: " << ruta2.getDestino() << endl;
+    cout << "Ruta 3 - ID: " << ruta3.getIdRuta() << ", Origen: " << ruta3.getOrigen() << ", Destino: " << ruta3.getDestino() << endl;
+}
+
 int main() {
-    // Variables necesarias
     vector<Usuario*> usuarios;
-    vector<Autobus*> autobuses;
-    vector<Ruta*> rutas;
+    vector<Boleto*> boletos;
 
-    int opcion;
+    // Crear objetos de tipo Ruta
+    Ruta ruta1(456, "Ciudad A", "Ciudad B");
+    Ruta ruta2(467, "Ciudad C", "Ciudad D");
+    Ruta ruta3(478, "Ciudad E", "Ciudad F");
 
-    do {
-        // Mostrar opciones del menú
-        cout << "" << endl;
-        cout << "===== MENÚ =====" << endl;
-        cout << "1. Crear usuario" << endl;
-        cout << "2. Mostrar información de usuario" << endl;
-        cout << "3. Crear autobús" << endl;
-        cout << "4. Mostrar información de autobús" << endl;
-        cout << "5. Crear ruta" << endl;
-        cout << "6. Mostrar información de ruta" << endl;
-        cout << "7. Ver historial de boletos" << endl;
-        cout << "8. Salir" << endl;
+    // Asignar autobuses a las rutas
+    Autobus autobus1(1, "Modelo 1", 50, "Conductor 1", 1);
+    Autobus autobus2(2, "Modelo 2", 40, "Conductor 2", 2);
+    Autobus autobus3(3, "Modelo 3", 30, "Conductor 3", 3);
+
+    ruta1.setAutobus(&autobus1);
+    ruta2.setAutobus(&autobus2);
+    ruta3.setAutobus(&autobus3);
+
+    int opcion = 0;
+
+    while (opcion != 5) {
+        cout << "\n----- Menú Principal -----" << endl;
+        cout << "1. Crear nuevo usuario" << endl;
+        cout << "2. Ver historial de boletos" << endl;
+        cout << "3. Agregar nuevo boleto" << endl;
+        cout << "4. Mostrar información de las rutas" << endl;
+        cout << "5. Salir \n" << endl;
         cout << "Ingrese una opción: ";
         cin >> opcion;
 
-        switch (opcion) {
-        case 1: {
-            // Lógica para crear un nuevo usuario
-            int idUsuario;
-            string nombreUsuario, correo, contrasena;
-
-            cout << "Ingrese el ID del usuario: ";
-            cin >> idUsuario;
-
-            cout << "Ingrese el nombre del usuario: ";
-            cin >> nombreUsuario;
-
-            cout << "Ingrese el correo electrónico del usuario: ";
-            cin >> correo;
-
-            cout << "Ingrese la contraseña del usuario: ";
-            cin >> contrasena;
-
-            Usuario* nuevoUsuario = new Usuario(idUsuario, nombreUsuario, idUsuario, correo, contrasena);
-
-            cout << "Usuario creado exitosamente." << endl;
-            break;
+        if (opcion == 1) {
+            // ... Código para crear nuevo usuario ...
         }
-
-        case 2: {
-            // Lógica para mostrar información de un usuario
-            int idUsuario;
-
-            cout << "Ingrese el ID del usuario: ";
-            cin >> idUsuario;
-
-            bool encontrado = false;
-            for (const auto& usuario : usuarios) {
-                if (usuario->getID() == idUsuario) {
-                    usuario->mostrarInformacion();
-                    encontrado = true;
-                    break;
-                }
-            }
-
-            if (!encontrado) {
-                cout << "Usuario no encontrado." << endl;
-            }
-            break;
+        else if (opcion == 2) {
+            verHistorialBoletos("boletos.txt");
         }
+        else if (opcion == 3) {
+            int idBoleto, costo, asiento;
+            string origen, destino;
+            int dia, mes, año;
+            int horas, minutos;
 
-        case 3: {
-            // Lógica para crear un nuevo autobús
-            int idAutobus, capacidad, idConductor;
-            string modeloAutobus, conductorAutobus;
+            cout << "Ingrese el ID del boleto: ";
+            cin >> idBoleto;
+            cin.ignore();
 
-            cout << "Ingrese el ID del autobús: ";
-            cin >> idAutobus;
+            cout << "Ingrese el origen: ";
+            getline(cin, origen);
 
-            cout << "Ingrese el modelo del autobús: ";
-            cin >> modeloAutobus;
+            cout << "Ingrese el destino: ";
+            getline(cin, destino);
 
-            cout << "Ingrese el conductor del autobús: ";
-            cin >> conductorAutobus;
+            cout << "Ingrese la fecha (día mes año): ";
+            cin >> dia >> mes >> año;
 
-            cout << "Ingrese la capacidad máxima del autobús: ";
-            cin >> capacidad;
+            cout << "Ingrese la hora (horas minutos): ";
+            cin >> horas >> minutos;
 
-            cout << "Ingrese el ID del conductor: ";
-            cin >> idConductor;
+            cout << "Ingrese el costo: ";
+            cin >> costo;
 
-            Autobus* nuevoAutobus = new Autobus(idAutobus, modeloAutobus, capacidad, conductorAutobus, idConductor);
+            cout << "Ingrese el número de asiento: ";
+            cin >> asiento;
 
-            cout << "Autobús creado exitosamente." << endl;
-            break;
+            Fecha fecha(dia, mes, año);
+            Hora hora(horas, minutos);
+            Boleto* boleto = new Boleto(idBoleto, origen, destino, fecha, hora, costo);
+            boleto->setAsiento(asiento);
+            boletos.push_back(boleto);
+
+            cout << "\nBoleto agregado exitosamente.\n" << endl;
         }
-
-              // ... Resto del código ...
-
-        default:
-            cout << "Opción inválida. Intente nuevamente." << endl;
-            break;
+        else if (opcion == 4) {
+            mostrarInformacionRutas(ruta1, ruta2, ruta3);
         }
-    } while (opcion != 8);
+        else if (opcion == 5) {
+            cout << "\nSaliendo del programa..." << endl;
+            break; // Termina la ejecución del programa
+        }
+        else {
+            cout << "\nOpción inválida. Por favor, ingrese una opción válida.\n" << endl;
+        }
+    }
 
-    // Liberar memoria de los objetos creados
+    // Liberar memoria
     liberarMemoria(usuarios);
-    liberarMemoria(autobuses);
-    liberarMemoria(rutas);
+    liberarMemoria(boletos);
 
     return 0;
 }
