@@ -11,20 +11,20 @@ class Fecha {
 private:
     int dia;
     int mes;
-    int año;
+    int ano;
 
 public:
     // Constructor
-    Fecha(int d, int m, int a) : dia(d), mes(m), año(a) {}
+    Fecha(int d, int m, int a) : dia(d), mes(m), ano(a) {}
 
     // Métodos de acceso
     int getDia() const { return dia; }
     int getMes() const { return mes; }
-    int getAño() const { return año; }
+    int getAno() const { return ano; }
 
     // Sobrecarga del operador de inserción <<
     friend std::ostream& operator<<(std::ostream& os, const Fecha& fecha) {
-        os << fecha.dia << "/" << fecha.mes << "/" << fecha.año;
+        os << fecha.dia << "/" << fecha.mes << "/" << fecha.ano;
         return os;
     }
 };
@@ -268,18 +268,18 @@ class Usuario : public Persona {
 private:
     string idUsuario;
     string correoElectronico;
-    string contraseña;
+    string contrasena;
     vector<Boleto*> boletos;
     vector<Pago*> pagos;
 
 public:
     Usuario(int id, const string& nombre, int edad, const string& correo, const string& contrasena)
-        : Persona(nombre, edad, id), correoElectronico(correo), contraseña(contrasena) {}
+        : Persona(nombre, edad, id), correoElectronico(correo), contrasena(contrasena) {}
 
     void mostrarInformacion() const {
         Persona::mostrarInformacion();
         cout << "Correo: " << correoElectronico << endl;
-        cout << "Contraseña: " << contraseña << endl;
+        cout << "Contraseña: " << contrasena << endl;
     }
 
     void iniciarSesion() {
@@ -316,11 +316,11 @@ public:
     }
 
     string getContraseña() const {
-        return contraseña;
+        return contrasena;
     }
 
-    void setContraseña(const string& nuevaContraseña) {
-        contraseña = nuevaContraseña;
+    void setContrasena(const string& nuevaContrasena) {
+        contrasena = nuevaContrasena;
     }
 };
 
@@ -489,13 +489,13 @@ void verHistorialBoletos(const string& nombreArchivo) {
 
     int idBoleto, costo, asiento;
     string origen, destino;
-    int dia, mes, año;
+    int dia, mes, ano;
     int horas, minutos;
     bool archivoLeido = false;
 
-    while (archivo >> idBoleto >> origen >> destino >> dia >> mes >> año >> horas >> minutos >> costo >> asiento) {
+    while (archivo >> idBoleto >> origen >> destino >> dia >> mes >> ano >> horas >> minutos >> costo >> asiento) {
         archivoLeido = true;
-        Fecha fecha(dia, mes, año);
+        Fecha fecha(dia, mes, ano);
         Hora hora(horas, minutos);
         Boleto* boleto = new Boleto(idBoleto, origen, destino, fecha, hora, costo);
         boleto->setAsiento(asiento);
@@ -530,7 +530,7 @@ void verHistorialBoletos(const string& nombreArchivo) {
     if (opcion == 1) {
         int idBoleto, costo, asiento;
         string origen, destino;
-        int dia, mes, año;
+        int dia, mes, ano;
         int horas, minutos;
 
         cout << "Ingrese el ID del boleto: ";
@@ -544,7 +544,7 @@ void verHistorialBoletos(const string& nombreArchivo) {
         getline(cin, destino);
 
         cout << "Ingrese la fecha (día mes año): ";
-        cin >> dia >> mes >> año;
+        cin >> dia >> mes >> ano;
 
         cout << "Ingrese la hora (horas minutos): ";
         cin >> horas >> minutos;
@@ -555,7 +555,7 @@ void verHistorialBoletos(const string& nombreArchivo) {
         cout << "Ingrese el número de asiento: ";
         cin >> asiento;
 
-        Fecha fecha(dia, mes, año);
+        Fecha fecha(dia, mes, ano);
         Hora hora(horas, minutos);
         Boleto* boleto = new Boleto(idBoleto, origen, destino, fecha, hora, costo);
         boleto->setAsiento(asiento);
@@ -584,7 +584,7 @@ void verHistorialBoletos(const string& nombreArchivo) {
         archivoSalida << boleto->getDestino() << " ";
         archivoSalida << boleto->getFecha().getDia() << " ";
         archivoSalida << boleto->getFecha().getMes() << " ";
-        archivoSalida << boleto->getFecha().getAño() << " ";
+        archivoSalida << boleto->getFecha().getAno() << " ";
         archivoSalida << boleto->getHora().getHoras() << " ";
         archivoSalida << boleto->getHora().getMinutos() << " ";
         archivoSalida << boleto->getCosto() << " ";
@@ -648,7 +648,25 @@ int main() {
         cin >> opcion;
 
         if (opcion == 1) {
-            // ... Código para crear nuevo usuario ...
+            int idUsuario;
+            string nombreUsuario, correo, contrasena;
+
+            cout << "Ingrese el ID del usuario: ";
+            cin >> idUsuario;
+
+            cout << "Ingrese el nombre del usuario: ";
+            cin >> nombreUsuario;
+
+            cout << "Ingrese el correo electrónico del usuario: ";
+            cin >> correo;
+
+            cout << "Ingrese la contraseña del usuario: ";
+            cin >> contrasena;
+
+            Usuario* nuevoUsuario = new Usuario(idUsuario, nombreUsuario, idUsuario, correo, contrasena);
+
+            cout << "Usuario creado exitosamente." << endl;
+            
         }
         else if (opcion == 2) {
             verHistorialBoletos("boletos.txt");
@@ -656,7 +674,7 @@ int main() {
         else if (opcion == 3) {
             int idBoleto, costo, asiento;
             string origen, destino;
-            int dia, mes, año;
+            int dia, mes, ano;
             int horas, minutos;
 
             cout << "Ingrese el ID del boleto: ";
@@ -670,7 +688,7 @@ int main() {
             getline(cin, destino);
 
             cout << "Ingrese la fecha (día mes año): ";
-            cin >> dia >> mes >> año;
+            cin >> dia >> mes >> ano;
 
             cout << "Ingrese la hora (horas minutos): ";
             cin >> horas >> minutos;
@@ -681,7 +699,7 @@ int main() {
             cout << "Ingrese el número de asiento: ";
             cin >> asiento;
 
-            Fecha fecha(dia, mes, año);
+            Fecha fecha(dia, mes, ano);
             Hora hora(horas, minutos);
             Boleto* boleto = new Boleto(idBoleto, origen, destino, fecha, hora, costo);
             boleto->setAsiento(asiento);
