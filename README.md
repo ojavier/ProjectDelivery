@@ -1,10 +1,6 @@
-# ProjectDelivery
 
 ### Oscar Javier Villeda Arteaga
-###### A01277297
 
-
-### Project delivery - 1
 
 ## Sistema de reservas de transporte público
 
