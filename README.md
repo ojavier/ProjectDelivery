@@ -1,5 +1,4 @@
 
-### Oscar Javier Villeda Arteaga
 
 
 ## Sistema de reservas de transporte público
