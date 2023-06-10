@@ -221,7 +221,7 @@ public:
     }
 };
 
-// Clase virtual Persona para representar una persona y que ciertos atributos puedan ser aplicados en otras clases
+/// Clase virtual Persona para representar una persona y que ciertos atributos puedan ser aplicados en otras clases
 class Persona {
 protected:
     string nombre;
@@ -232,7 +232,7 @@ public:
     Persona(const string& nombre, int edad, int id)
         : nombre(nombre), edad(edad), id(id) {}
 
-    void mostrarInformacion() const {
+    virtual void mostrarInformacion() const {
         cout << "Nombre: " << nombre << endl;
         cout << "Edad: " << edad << endl;
         cout << "ID: " << id << endl;
@@ -276,8 +276,10 @@ public:
     Usuario(int id, const string& nombre, int edad, const string& correo, const string& contrasena)
         : Persona(nombre, edad, id), correoElectronico(correo), contrasena(contrasena) {}
 
-    void mostrarInformacion() const {
-        Persona::mostrarInformacion();
+    void mostrarInformacion() const override {
+        cout << "Nombre: " << nombre << endl;
+        cout << "Edad: " << edad << endl;
+        cout << "ID: " << id << endl;
         cout << "Correo: " << correoElectronico << endl;
         cout << "Contraseña: " << contrasena << endl;
     }
@@ -333,7 +335,7 @@ public:
     Conductor(const std::string& nombre, int edad, int id, int idConductor)
         : Persona(nombre, edad, id), idConductor(idConductor) {}
 
-    void mostrarInformacion() const {
+    void mostrarInformacion() const override {
         cout << "--- Información del Conductor ---" << endl;
         Persona::mostrarInformacion();
         cout << "ID Conductor: " << idConductor << endl;
@@ -666,7 +668,7 @@ int main() {
             Usuario* nuevoUsuario = new Usuario(idUsuario, nombreUsuario, idUsuario, correo, contrasena);
 
             cout << "Usuario creado exitosamente." << endl;
-            
+
         }
         else if (opcion == 2) {
             verHistorialBoletos("boletos.txt");
