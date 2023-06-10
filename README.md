@@ -3,6 +3,7 @@
 
 ## Sistema de reservas de transporte público
 
+
 Este proyecto busca desarrollar un sistema de reservas en línea para el transporte público, como autobuses. Esto permitiría a los usuarios reservar y pagar sus boletos de antemano, evitando largas filas y facilitando la planificación de viajes. La idea me surgió al ver el basto tráfico generado en Querétaro para buscar mejorar la movilidad y el transporte público busqué distinras opciones y ésta me pareció una.
 
 El sistema permite a los usuarios buscar y seleccionar rutas específicas, indicando el origen y destino del viaje, así como la fecha y hora deseada. Luego, los usuarios pueden seleccionar los asientos disponibles en el autobús y proceder a realizar el pago correspondiente.
